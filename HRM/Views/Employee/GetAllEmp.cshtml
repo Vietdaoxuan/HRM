@@ -1,0 +1,93 @@
+﻿@model HRM.Models.EmployeeCVModel
+@{
+    ViewBag.Title = "GetAllEmp";
+}
+
+<h2>GetAllEmp</h2>
+@using (Html.BeginForm("GetAllEmp", "Employee", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>EmployeeCVModel</h4>
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.searchtxt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.searchtxt, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.searchtxt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create New", "CreateEmp")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NickName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th></th>
+    </tr>
+    @if (ViewBag.emp != null)
+    {
+        foreach (System.Data.DataRow item in ViewBag.emp.Rows)
+        {
+            <tr>
+                <td>
+                    @item["EmpID"]
+                </td>
+                <td>
+                    @item["VLastName"]
+                </td>
+                <td>
+                    @item["VFirstName"]
+                </td>
+                <td>
+                    @item["NickName"]
+                </td>
+                <td>
+                    @item["DOB"]
+                </td>
+                <td>
+                    @item["Gender"]
+                </td>
+                <td>
+                    @item["Email"]
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "UpdateEmp", new { id = item["EmpID"] }) |
+                    @Html.ActionLink("Details", "Details", new { id = item["EmpID"] }) |
+                    @Html.ActionLink("Delete", "DeleteEmp", new { id = item["EmpID"], email = item["Email"] })
+                </td>
+            </tr>
+        }
+    }
+
+</table>
+

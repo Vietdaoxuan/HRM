@@ -1,0 +1,69 @@
+﻿@model HRM.Models.EmployeeCVModel
+
+@{
+    ViewBag.Title = "DeleteEmp";
+}
+
+<h2>DeleteEmp</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.ValidationSummary(true)
+        <h4>EmployeeCVModel</h4>
+        <hr />
+        <table class="table">
+            <tr>
+                @Html.HiddenFor(model => model.EmpID)
+                <th>
+                    @Html.DisplayNameFor(model => model.VLastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.VFirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NickName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DOB)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (System.Data.DataRow item in ViewBag.emp.Rows)
+            {
+                <tr>
+                    <td>
+                        @item["VLastName"]
+                    </td>
+                    <td>
+                        @item["VFirstName"]
+                    </td>
+                    <td>
+                        @item["NickName"]
+                    </td>
+                    <td>
+                        @item["DOB"]
+                    </td>
+                    <td>
+                        @item["Gender"]
+                    </td>
+                    <td>
+                        @item["Email"]
+                    </td>
+                </tr>
+            }
+        </table>
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "GetAllEmp")
+        </div>
+     }
+</div>

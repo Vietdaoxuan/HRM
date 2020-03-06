@@ -1,0 +1,63 @@
+﻿@model HRM.Models.EmployeeCVModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>EmployeeCVModel</h4>
+    <hr />
+    <table class="table">
+        <tr>
+            @Html.HiddenFor(model => model.EmpID)
+            <th>
+                @Html.DisplayNameFor(model => model.VLastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VFirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NickName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DOB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (System.Data.DataRow item in ViewBag.emp.Rows)
+        {
+            <tr>
+                <td>
+                    @item["VLastName"]
+                </td>
+                <td>
+                    @item["VFirstName"]
+                </td>
+                <td>
+                    @item["NickName"]
+                </td>
+                <td>
+                    @item["DOB"]
+                </td>
+                <td>
+                    @item["Gender"]
+                </td>
+                <td>
+                    @item["Email"]
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

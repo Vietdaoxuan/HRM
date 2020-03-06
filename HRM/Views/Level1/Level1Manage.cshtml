@@ -1,0 +1,202 @@
+﻿@model HRM.Models.Level1Models
+@{
+    ViewBag.Title = "Level1Manage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Level1Manage</h2>
+
+<div class="container">
+                <ul class="nav nav-pills" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab"  id="Tlist-tab" href="#Tlist">List</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="Infor-tab" data-toggle="tab" href="#Infor">Information</a>
+                    </li>                   
+                </ul>
+                
+
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade in active" id="Tlist">                     
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div>
+                                        <table class="table table-striped table-bordered dt-responsive nowrap" id="listGrid"></table>
+                                    </div>
+                                </div>
+                            </div>                     
+                    </div>
+                    <div class="tab-pane fade" id="Infor">
+                        <div class="form-horizontal">
+                            <span></span>
+                            <div class="form-group">
+                                <label id="lblCompanyID" class="control-label col-md-2">Company</label>
+                                <div class="col-md-5">
+                                    <select id="cboCompany" class="form-control">
+                                        <option value="1">1</option>
+                                    </select>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblLevel1Code" class="control-label col-md-2">Level Code</label>
+                                <div class="col-md-10">
+                                    <input id="txtLevel1Code" class="form-control text-box single-line">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblShortName" class="control-label col-md-2">Short Name</label>
+                                <div class="col-md-10">
+                                    <input id="txtShortName" class="form-control text-box single-line">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblName" class="control-label col-md-2">Name</label>
+                                <div class="col-md-10">
+                                    <input id="txtName" class="form-control text-box single-line">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblVNName" class="control-label col-md-2">VNName</label>
+                                <div class="col-md-10">
+                                    <input id="txtVNName" class="form-control text-box single-line">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblAddress" class="control-label col-md-2">Address</label>
+                                <div class="col-md-10">
+                                    <textarea id="txtAddress" class="form-control text-box single-line" style="width:300px"></textarea>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblPhone" class="control-label col-md-2">Phone</label>
+                                <div class="col-md-10">
+                                    <input id="txtPhone" class="form-control text-box single-line">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblFax" class="control-label col-md-2">Fax</label>
+                                <div class="col-md-10">
+                                    <input id="txtFax" class="form-control text-box single-line">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblRank" class="control-label col-md-2">Rank</label>
+                                <div class="col-md-10">
+                                    <input id="txtRank" class="form-control text-box single-line">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblNote" class="control-label col-md-2">Note</label>
+                                <div class="col-md-10">
+                                    <textarea id="txtNote" class="form-control text-box single-line" style="width:300px"></textarea>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblUsed" class="control-label col-md-2">Used</label>
+                                <div class="col-md-10">
+                                    <input type="checkbox" class="checkbox" id="chkUsed" checked />
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblLocation" class="control-label col-md-2">Location</label>
+                                <div class="col-md-5">
+                                    <select id="cboLocation" class="form-control">
+                                        <option value="1">1</option>
+                                    </select>
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label id="lblWP" class="control-label col-md-2">Working Place</label>
+                                <div class="col-md-10">
+                                    <textarea id="txtWP" class="form-control text-box single-line" style="width:300px"></textarea>
+                                    <span></span>
+                                </div>
+                            </div>
+                            </div>
+                        </div>                  
+                </div>              
+            </div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            function loadData() {
+                //định dang cột để tạo bảng
+                var renderColumns = [        
+                    {
+                        orderable: false,
+                        title: "Level Code",
+                        data: "LSLevel1Code"
+                    },
+                    {
+                        orderable: false,
+                        title: "Short Name",
+                        data: "ShortName",                       
+                    },
+                    {
+                        orderable: false,
+                        title: "Name",
+                        data: "Name",                      
+                    },
+                    {
+                        orderable: false,
+                        title: "VNName",
+                        data: "VNName",                       
+                    },
+                    {
+                        orderable: false,
+                        title: "Address",
+                        data: "Address",
+                    },               
+                ]
+
+                 $.ajax({
+                        url:'@Url.Action("LoadData", "Level1")',
+                    }).done(function(res) {
+
+                        console.log(res);
+                        //tạo grid
+                        let HCBQTable = $('#listGrid').DataTable({
+                            destroy: true,
+                            data: res,
+                            columns: renderColumns,
+                            searching: false,
+                            ordering: false,
+                            pageLength: 50,
+                            paging: false,
+                            info: false,
+                        });
+
+                        //Event Grid click
+                        $('table thead input').click(function() {
+                            if ($(this).is(':checked'))
+                                $('#listGrid tbody input').prop("checked", true);
+                            else
+                                $('#listGrid tbody input').prop("checked", false);
+                        });                         
+                       
+                    }) //fail
+                    .fail(function() {
+                        console.log('request error');
+                        $('#loading').removeClass('loading');
+                    });
+
+            }//End LoadData
+
+            loadData();
+        });
+    </script>
+}

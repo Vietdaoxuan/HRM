@@ -1,0 +1,122 @@
+﻿@model HRM.Models.LSCompanyModel
+
+@{
+    ViewBag.Title = "GetAllCompany";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAllCompany</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.LSCompanyID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LSCompanyCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ShortName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fax)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Rank)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Note)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Used)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.WorkingPlace)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Creater)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreateTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Editer)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EditTime)
+        </th>
+        <th></th>
+    </tr>
+
+    @if (ViewBag.com != null)
+    {
+        foreach (System.Data.DataRow item in ViewBag.com.Rows)
+        {
+    <tr>
+        <td>
+            @item["LSCompanyID"]
+        </td>
+        <td>
+            @item["LSCompanyCode"]
+        </td>
+        <td>
+            @item["ShortName"]
+        </td>
+        <td>
+            @item["Name"]
+        </td>
+        <td>
+            @item["Address"]
+        </td>
+        <td>
+            @item["Phone"]
+        </td>
+        <td>
+            @item["Fax"]
+        </td>
+        <td>
+            @item["Rank"]
+        </td>
+        <td>
+            @item["Note"]
+        </td>
+        <td>
+            @item["Used"]
+        </td>
+        <td>
+            @item["WorkingPlace"]
+        </td>
+        <td>
+            @item["Creater"]
+        </td>
+        <td>
+            @item["CreateTime"]
+        </td>
+        <td>
+            @item["Editer"]
+        </td>
+        <td>
+            @item["EditTime"]
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "UpdateEmp", new { /*id = item["EmpID"]*/ }) |
+            @Html.ActionLink("Details", "Details", new { /*id = item["EmpID"]*/ }) |
+            @Html.ActionLink("Delete", "DeleteEmp", new { /*id = item["EmpID"]*/ })
+        </td>
+    </tr>
+        }
+    }
+
+</table>
