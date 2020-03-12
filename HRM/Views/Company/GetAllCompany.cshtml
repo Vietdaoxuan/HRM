@@ -1,4 +1,4 @@
-﻿@model HRM.Models.LSCompanyModel
+@model HRM.Models.LSCompanyModel
 
 @{
     ViewBag.Title = "GetAllCompany";
@@ -6,117 +6,295 @@
 }
 
 <h2>GetAllCompany</h2>
+@using (Html.BeginForm("GetAllCompany", "Company", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.searchtxt, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.searchtxt, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.searchtxt, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    <a href="#" class="btn btn-info" onclick="AddCompany(0)">Create</a>
 </p>
+@*Modal for insert & update operation*@
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 id="modalTitle"></h4>
+            </div>
+            <div class="modal-body" style="height:35em">
+                <form id="form">
+                    <fieldset id="Submitform">
+                        @Html.HiddenFor(model => model.LSCompanyID, new { @id = "ComID" })
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.LSCompanyCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSCompanyCode, new { htmlAttributes = new { @class = "form-control", @id = "ComCode" } })
+                                @Html.ValidationMessageFor(model => model.LSCompanyCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.ShortName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ShortName, new { htmlAttributes = new { @class = "form-control", @id = "ShortName" } })
+                                @Html.ValidationMessageFor(model => model.ShortName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "Name" } })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control", @id = "Address" } })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", @id = "Phone" } })
+                                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Fax, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Fax, new { htmlAttributes = new { @class = "form-control", @id = "Fax" } })
+                                @Html.ValidationMessageFor(model => model.Fax, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Rank, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Rank, new { htmlAttributes = new { @class = "form-control", @id = "Rank" } })
+                                @Html.ValidationMessageFor(model => model.Rank, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @id = "Note" } })
+                                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Used, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Used, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Used, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.WorkingPlace, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.WorkingPlace, new { htmlAttributes = new { @class = "form-control", @id = "WorkingPlace" } })
+                                @Html.ValidationMessageFor(model => model.WorkingPlace, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Creater, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Creater, new { htmlAttributes = new { @class = "form-control", @id = "Creater" } })
+                                @Html.ValidationMessageFor(model => model.Creater, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @Html.HiddenFor(model => model.CreateTime)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Editer, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Editer, new { htmlAttributes = new { @class = "form-control", @id = "Editer" } })
+                                @Html.ValidationMessageFor(model => model.Editer, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @Html.HiddenFor(model => model.EditTime)
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input value="Save" class="btn btn-default" id="SaveCompany" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal for Delete Operation*@
+<div class="modal fade" id="DeleteConfirm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Delete Company</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure? You want to delete this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn btn-primary" id="cancel">Cancel</a>
+                <a href="#" class="btn btn-danger" id="confirm">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LSCompanyID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.LSCompanyCode)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ShortName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Phone)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Fax)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Rank)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Note)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Used)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WorkingPlace)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Creater)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Editer)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EditTime)
-        </th>
-        <th></th>
-    </tr>
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LSCompanyCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
 
     @if (ViewBag.com != null)
     {
         foreach (System.Data.DataRow item in ViewBag.com.Rows)
         {
-    <tr>
-        <td>
-            @item["LSCompanyID"]
-        </td>
-        <td>
-            @item["LSCompanyCode"]
-        </td>
-        <td>
-            @item["ShortName"]
-        </td>
-        <td>
-            @item["Name"]
-        </td>
-        <td>
-            @item["Address"]
-        </td>
-        <td>
-            @item["Phone"]
-        </td>
-        <td>
-            @item["Fax"]
-        </td>
-        <td>
-            @item["Rank"]
-        </td>
-        <td>
-            @item["Note"]
-        </td>
-        <td>
-            @item["Used"]
-        </td>
-        <td>
-            @item["WorkingPlace"]
-        </td>
-        <td>
-            @item["Creater"]
-        </td>
-        <td>
-            @item["CreateTime"]
-        </td>
-        <td>
-            @item["Editer"]
-        </td>
-        <td>
-            @item["EditTime"]
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "UpdateEmp", new { /*id = item["EmpID"]*/ }) |
-            @Html.ActionLink("Details", "Details", new { /*id = item["EmpID"]*/ }) |
-            @Html.ActionLink("Delete", "DeleteEmp", new { /*id = item["EmpID"]*/ })
-        </td>
-    </tr>
+            <tr>
+                @Html.HiddenFor(model => item["LSCompanyID"])
+                <td>
+                    @item["LSCompanyCode"]
+                </td>
+                <td>
+                    @item["ShortName"]
+                </td>
+                <td>
+                    @item["Name"]
+                </td>
+                <td>
+                    @item["Address"]
+                </td>
+                <td>
+                    <a href="#" class="btn btn-warning" onclick='Edit("@item["LSCompanyID"]","@item["LSCompanyCode"]","@item["ShortName"]","@item["Name"]","@item["Address"]","@item["Phone"]","@item["Fax"]","@item["Rank"]","@item["Note"]","@item["WorkingPlace"]", "@item["Creater"]","@item["Editer"]")'>Edit</a>
+                    @*@Html.ActionLink("Delete", "DeleteCom", new { id = @item["LSCompanyID"] }, new { @class = "btn btn-danger", @id = "delete"})*@ 
+                    <a href="#" class="btn btn-danger" id="delete" type="submit" onclick='DeleteCompany("@item["LSCompanyID"]")'>Delete</a>
+                </td>
+            </tr>
         }
     }
-
 </table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
+<script>
+    function AddCompany(LSCompanyID) {
+        $("#form")[0].reset();
+        $("#modalTitle").html("Add New Company");
+        $("#myModal").modal();
+        $("#SaveCompany").click(function () {
+            var data = $("#Submitform").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Company/CreateCompany",
+                data: data,
+                success: function (result) {
+                    alert("Success!");
+                    window.location.href = "/Company/GetAllCompany";
+                    $("#myModal").modal("hide");
+                }
+            })
+        })
+    }
+
+    function Edit(LSCompanyID, LSCompanyCode, ShortName, Name, Address, Phone, Fax, Rank, Note, WorkingPlace, Creater, Editer) {
+        $("#form")[0].reset();
+        $("#modalTitle").html("Update Company");
+        $("#myModal").modal();
+        $.ajax({
+            type: "GET",
+            url: "/Company/UpdateCom/" + LSCompanyID,
+            datatype: "json",
+            success: function (data) {
+                $("#ComID").val(LSCompanyID);
+                $("#ComCode").val(LSCompanyCode);
+                $("#ShortName").val(ShortName);
+                $("#Name").val(Name);
+                $("#Address").val(Address);
+                $("#Phone").val(Phone);
+                $("#Fax").val(Fax);
+                $("#Rank").val(Rank);
+                $("#Note").val(Note);
+                $("#WorkingPlace").val(WorkingPlace);
+                $("#Creater").val(Creater); $("#Creater").prop("disabled", true);
+                $("#Editer").val(Editer);
+            }
+        })
+        $("#SaveCompany").click(function () {
+            console.log(LSCompanyID);
+            var data = $("#Submitform").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Company/UpdateCom/" + LSCompanyID,
+                data: data,
+                success: function (result) {
+                    alert("Success!");                   
+                    window.location.href = "/Company/GetAllCompany";
+                    $("#myModal").modal("hide");
+                }
+            })
+        })
+    }
+
+    function DeleteCompany(LSCompanyID) {
+        console.log(LSCompanyID);
+        $("#DeleteConfirm").modal();
+        $("#confirm").click(function () {
+            $.ajax({
+                type: "Post",
+                url: "/Company/DeleteCom/" + LSCompanyID,
+                success: function (result) {
+                    window.location.href = "/Company/GetAllCompany";
+                    $("#myModal").modal("hide");
+                }
+            })
+        })
+    }
+</script>
+
+
+
