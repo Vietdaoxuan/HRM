@@ -1,15 +1,20 @@
-﻿@model HRM.Models.EmployeeCVModel
+@model HRM.Models.Employee
 @{
     ViewBag.Title = "GetAllEmp";
 }
 
-<h2>GetAllEmp</h2>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+
+<style>
+    .datepicker {
+        z-index: 1600 !important;
+    }
+</style>
 @using (Html.BeginForm("GetAllEmp", "Employee", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>EmployeeCVModel</h4>
         <hr />
         <div class="form-group">
             @Html.LabelFor(model => model.searchtxt, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -27,9 +32,389 @@
 }
 
 <p>
-    @Html.ActionLink("Create New", "CreateEmp")
+    <a href="#" class="btn btn-info" onclick="AddEmployee(0)">Create</a>
 </p>
-<table class="table">
+@*Modal for insert & update operation*@
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4 id="modalTitle"></h4>
+            </div>
+            <div class="modal-body" style="height:160em">
+                <form id="form">
+                    <fieldset id="Submitform">
+                        @Html.HiddenFor(model => model.EmpID, new { @id = "EmpID" })
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.VLastName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.VLastName, new { htmlAttributes = new { @class = "form-control", @id = "VLastName" } })
+                                @Html.ValidationMessageFor(model => model.VLastName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.VFirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.VFirstName, new { htmlAttributes = new { @class = "form-control", @id = "VFirstName" } })
+                                @Html.ValidationMessageFor(model => model.VFirstName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.NickName, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.NickName, new { htmlAttributes = new { @class = "form-control", @id = "NickName" } })
+                                @Html.ValidationMessageFor(model => model.NickName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control datepicker", @id = "DOB" } })
+                                @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.RadioButtonFor(model => model.Gender, "1")<text>Male</text>
+                                @Html.RadioButtonFor(model => model.Gender, "0")<text>Female</text>
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSMaritalID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSMaritalID, new { htmlAttributes = new { @class = "form-control", @id = "LSMaritalID" } })
+                                @Html.ValidationMessageFor(model => model.LSMaritalID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Born_District, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Born_District, new { htmlAttributes = new { @class = "form-control", @id = "Born_District" } })
+                                @Html.ValidationMessageFor(model => model.Born_District, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Born_LSProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Born_LSProvinceID, new { htmlAttributes = new { @class = "form-control", @id = "Born_LSProvinceID" } })
+                                @Html.ValidationMessageFor(model => model.Born_LSProvinceID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Native_District, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Native_District, new { htmlAttributes = new { @class = "form-control", @id = "Native_District" } })
+                                @Html.ValidationMessageFor(model => model.Native_District, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Native_LSProvinceID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Native_LSProvinceID, new { htmlAttributes = new { @class = "form-control", @id = "Native_LSProvinceID" } })
+                                @Html.ValidationMessageFor(model => model.Native_LSProvinceID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSEthnicID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSEthnicID, new { htmlAttributes = new { @class = "form-control", @id = "LSEthnicID" } })
+                                @Html.ValidationMessageFor(model => model.LSEthnicID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.IDNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IDNo, new { htmlAttributes = new { @class = "form-control", @id = "IDNo" } })
+                                @Html.ValidationMessageFor(model => model.IDNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.IDIssuedDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IDIssuedDate, new { htmlAttributes = new { @class = "form-control datepicker", @id = "IDIssuedDate" } })
+                                @Html.ValidationMessageFor(model => model.IDIssuedDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.IDIssuedPlace, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IDIssuedPlace, new { htmlAttributes = new { @class = "form-control", @id = "IDIssuedPlace" } })
+                                @Html.ValidationMessageFor(model => model.IDIssuedPlace, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Mobifone, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Mobifone, new { htmlAttributes = new { @class = "form-control", @id = "Mobifone" } })
+                                @Html.ValidationMessageFor(model => model.Mobifone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control", @id = "Telephone" } })
+                                @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @id = "Email" } })
+                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSNationalityID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSNationalityID, new { htmlAttributes = new { @class = "form-control", @id = "LSNationalityID" } })
+                                @Html.ValidationMessageFor(model => model.LSNationalityID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSCultureLevelID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSCultureLevelID, new { htmlAttributes = new { @class = "form-control", @id = "LSCultureLevelID" } })
+                                @Html.ValidationMessageFor(model => model.LSCultureLevelID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.ScanCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.ScanCode, new { htmlAttributes = new { @class = "form-control", @id = "ScanCode" } })
+                                @Html.ValidationMessageFor(model => model.ScanCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Note, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @id = "Note" } })
+                                @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Creater, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Creater, new { htmlAttributes = new { @class = "form-control", @id = "Creater" } })
+                                @Html.ValidationMessageFor(model => model.Creater, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Editer, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Editer, new { htmlAttributes = new { @class = "form-control", @id = "Editer" } })
+                                @Html.ValidationMessageFor(model => model.Editer, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.BankNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.BankNo, new { htmlAttributes = new { @class = "form-control", @id = "BankNo" } })
+                                @Html.ValidationMessageFor(model => model.BankNo, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSBankID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10 col-md-10">
+                                @Html.EditorFor(model => model.LSBankID, new { htmlAttributes = new { @class = "form-control", @id = "LSBankID" } })
+                                @Html.ValidationMessageFor(model => model.LSBankID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.IsEmpBook, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IsEmpBook, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.IsEmpBook, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.IsEmpCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IsEmpCode, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.IsEmpCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.IsUniform, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IsUniform, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.IsUniform, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.IsTrain, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.IsTrain, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.IsTrain, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.EmpCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.EmpCode, new { htmlAttributes = new { @class = "form-control", @id = "EmpCode" } })
+                                @Html.ValidationMessageFor(model => model.EmpCode, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.EmpCodeOld, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.EmpCodeOld, new { htmlAttributes = new { @class = "form-control", @id = "EmpCodeOld" } })
+                                @Html.ValidationMessageFor(model => model.EmpCodeOld, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control datepicker", @id = "StartDate" } })
+                                @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSCompanyID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSCompanyID, new { htmlAttributes = new { @class = "form-control", @id = "LSCompanyID" } })
+                                @Html.ValidationMessageFor(model => model.LSCompanyID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSLevel1ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSLevel1ID, new { htmlAttributes = new { @class = "form-control", @id = "LSLevel1ID" } })
+                                @Html.ValidationMessageFor(model => model.LSLevel1ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSLevel2ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSLevel2ID, new { htmlAttributes = new { @class = "form-control", @id = "LSLevel2ID" } })
+                                @Html.ValidationMessageFor(model => model.LSLevel2ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSLevel3ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSLevel3ID, new { htmlAttributes = new { @class = "form-control", @id = "LSLevel3ID" } })
+                                @Html.ValidationMessageFor(model => model.LSLevel3ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSLevel4ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSLevel4ID, new { htmlAttributes = new { @class = "form-control", @id = "LSLevel4ID" } })
+                                @Html.ValidationMessageFor(model => model.LSLevel4ID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSPositionID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSPositionID, new { htmlAttributes = new { @class = "form-control", @id = "LSPositionID" } })
+                                @Html.ValidationMessageFor(model => model.LSPositionID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSJobTitleID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSJobTitleID, new { htmlAttributes = new { @class = "form-control", @id = "LSJobTitleID" } })
+                                @Html.ValidationMessageFor(model => model.LSJobTitleID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSLocationID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSLocationID, new { htmlAttributes = new { @class = "form-control", @id = "LSLocationID" } })
+                                @Html.ValidationMessageFor(model => model.LSLocationID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.LSEmpTypeID, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.LSEmpTypeID, new { htmlAttributes = new { @class = "form-control", @id = "LSEmpTypeID" } })
+                                @Html.ValidationMessageFor(model => model.LSEmpTypeID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group col-md-10">
+                            @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Active, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input value="Save" class="btn btn-default" id="SaveEmployee" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal for Delete Operation*@
+<div class="modal fade" id="DeleteConfirm">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="#" class="close" data-dismiss="modal">&times;</a>
+                <h4>Delete Employee</h4>
+            </div>
+            <div class="modal-body">
+                <h4>Are you sure? You want to delete this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <a href="#" data-dismiss="modal" class="btn btn-primary" id="cancel">Cancel</a>
+                <a href="#" class="btn btn-danger" id="confirm">Confirm</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table table-striped">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.EmpID)
@@ -74,20 +459,151 @@
                 <td>
                     @item["DOB"]
                 </td>
-                <td>
-                    @item["Gender"]
-                </td>
+                @if (item["Gender"].ToString() == "1")
+                {
+                    <td>
+                        Nam
+                    </td>
+                }
+                @if (item["Gender"].ToString() == "0")
+                {
+                    <td>
+                        Nữ
+                    </td>
+                }
                 <td>
                     @item["Email"]
                 </td>
+
                 <td>
-                    @Html.ActionLink("Edit", "UpdateEmp", new { id = item["EmpID"] }) |
-                    @Html.ActionLink("Details", "Details", new { id = item["EmpID"] }) |
-                    @Html.ActionLink("Delete", "DeleteEmp", new { id = item["EmpID"], email = item["Email"] })
+                    <a href="#" class="btn btn-warning" onclick='Edit("@item["EmpID"]","@item["VLastName"]","@item["VFirstName"]","@item["NickName"]","@item["DOB"]","@item["LSMaritalID"]","@item["Born_District"]","@item["Born_LSProvinceID"]","@item["Native_District"]", "@item["Native_LSProvinceID"]","@item["LSEthnicID"]","@item["IDNo"]","@item["IDIssuedDate"]","@item["IDIssuedPlace"]","@item["Mobifone"]","@item["Telephone"]","@item["Email"]","@item["LSNationalityID"]","@item["LSCultureLevelID"]","@item["ScanCode"]","@item["Note"]","@item["Creater"]","@item["Editer"]","@item["BankNo"]","@item["LSBankID"]","@item["EmpCode"]","@item["EmpCodeOld"]","@item["StartDate"]","@item["LSCompanyID"]","@item["LSLevel1ID"]","@item["LSLevel2ID"]","@item["LSLevel3ID"]","@item["LSLevel4ID"]","@item["LSPositionID"]","@item["LSJobTitleID"]","@item["LSLocationID"]","@item["LSEmpTypeID"]")'>Edit</a>
+                    @Html.ActionLink("Details", "Details", new { id = item["EmpID"] }, new { @class = "btn btn-success" }) 
+                    <a href="#" class="btn btn-danger" id="delete" type="submit" onclick='DeleteEmployee("@item["EmpID"]")'>Delete</a>
                 </td>
             </tr>
         }
     }
-
 </table>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script>
+    $(function () {
+        $(".datepicker").datepicker({
+            dateFormat: "yy/mm/dd",
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-100:+100",
+            showOn: "both",
+            buttonText: "Select"
+        });
+    })
+
+    function AddEmployee(EmpID) {
+        $("#form")[0].reset();
+        $("#modalTitle").html("Add New Employee");
+        $("#myModal").modal();
+
+        $("#SaveEmployee").click(function () {
+            var data = $("#Submitform").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Employee/CreateEmp",
+                data: data,
+                success: function (result) {
+                    alert("Success!");
+                    window.location.href = "/Employee/GetAllEmp";
+                    $("#myModal").modal("hide");
+                }
+            })
+        })
+    }
+
+    function Edit(EmpID, VLastName, VFirstName, NickName, DOB, LSMaritalID, Born_District, Born_LSProvinceID, Native_District, Native_LSProvinceID, LSEthnicID, IDNo, IDIssuedDate, IDIssuedPlace, Mobifone, Telephone, Email, LSNationalityID, LSCultureLevelID, ScanCode, Note, Creater, Editer, BankNo, LSBankID, EmpCode, EmpCodeOld, StartDate, LSCompanyID, LSLevel1ID, LSLevel2ID, LSLevel3ID, LSLevel4ID, LSPositionID, LSJobTitleID, LSLocationID, LSEmpTypeID) {
+        $("#form")[0].reset();
+        $("#modalTitle").html("Update Employee");
+        $("#myModal").modal();
+        $.ajax({
+            type: "GET",
+            url: "/Employee/UpdateEmp/" + EmpID,
+            datatype: "json",
+            success: function (data) {
+                $("#EmpID").val(EmpID);
+                $("#VLastName").val(VLastName);
+                $("#VFirstName").val(VFirstName);
+                $("#NickName").val(NickName);
+                $("#DOB").val(DOB);
+                $("#LSMaritalID").val(LSMaritalID);
+                $("#Born_District").val(Born_District);
+                $("#Born_LSProvinceID").val(Born_LSProvinceID);
+                $("#Native_District").val(Native_District);
+                $("#Native_LSProvinceID").val(Native_LSProvinceID);
+                $("#LSEthnicID").val(LSEthnicID);
+                $("#IDNo").val(IDNo);
+                $("#IDIssuedDate").val(IDIssuedDate);
+                $("#IDIssuedPlace").val(IDIssuedPlace);
+                $("#Mobifone").val(Mobifone);
+                $("#Telephone").val(Telephone);
+                $("#Email").val(Email);
+                $("#LSNationalityID").val(LSNationalityID);
+                $("#LSCultureLevelID").val(LSCultureLevelID);
+                $("#ScanCode").val(ScanCode);
+                $("#Note").val(Note);
+                $("#Creater").val(Creater);
+                if ($("#Creater").val() != null) {
+                    $("#Creater").prop("disabled", true);
+                }
+                else {
+                    $("#Creater").prop("disabled", false);
+                }
+                $("#Editer").val(Editer);
+                $("#BankNo").val(BankNo);
+                $("#LSBankID").val(LSBankID);
+                $("#EmpCode").val(EmpCode);
+                $("#EmpCodeOld").val(EmpCodeOld);
+                $("#StartDate").val(StartDate);
+                $("#LSCompanyID").val(LSCompanyID);
+                $("#LSLevel1ID").val(LSLevel1ID);
+                $("#LSLevel2ID").val(LSLevel2ID);
+                $("#LSLevel3ID").val(LSLevel3ID);
+                $("#LSLevel4ID").val(LSLevel4ID);
+                $("#LSPositionID").val(LSPositionID);
+                $("#LSJobTitleID").val(LSJobTitleID);
+                $("#LSLocationID").val(LSLocationID);
+                $("#LSEmpTypeID").val(LSEmpTypeID);
+            }
+        })
+        $("#SaveEmployee").click(function () {
+            console.log(EmpID);
+            var data = $("#Submitform").serialize();
+            $.ajax({
+                type: "Post",
+                url: "/Employee/UpdateEmp/" + EmpID,
+                data: data,
+                success: function (result) {
+                    alert("Success!");
+                    window.location.href = "/Employee/GetAllEmp";
+                    $("#myModal").modal("hide");
+                }
+            })
+        })
+    }
+
+    function DeleteEmployee(EmpID) {
+        console.log(EmpID);
+        $("#DeleteConfirm").modal();
+        $("#confirm").click(function () {
+            $.ajax({
+                type: "Post",
+                url: "/Employee/DeleteEmp/" + EmpID,
+                success: function (result) {
+                    window.location.href = "/Employee/GetAllEmp";
+                    $("#DeleteConfirm").modal("hide");
+                }
+            })
+        })
+    }
+</script>
+
+
 
